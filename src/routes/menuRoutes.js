@@ -2,7 +2,34 @@ const express = require('express');
 const router = express.Router();
 const MenuModel = require('../models/menuModel');
 
-// 获取菜品分类
+/**
+ * @swagger
+ * tags:
+ *   name: Menu
+ *   description: 菜单管理API
+ */
+
+/**
+ * @swagger
+ * /api/menu/categories:
+ *   get:
+ *     summary: 获取所有菜品分类
+ *     tags: [Menu]
+ *     responses:
+ *       200:
+ *         description: 获取分类成功
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 categories:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Category'
+ */
 async function getCategories(req, res) {
   try {
     const categories = await MenuModel.getAllCategories();
@@ -16,7 +43,34 @@ async function getCategories(req, res) {
   }
 }
 
-// 获取分类下的菜品
+/**
+ * @swagger
+ * /api/menu/category/{categoryId}/items:
+ *   get:
+ *     summary: 获取指定分类下的所有菜品
+ *     tags: [Menu]
+ *     parameters:
+ *       - in: path
+ *         name: categoryId
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: 分类ID
+ *     responses:
+ *       200:
+ *         description: 获取菜品成功
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 items:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/MenuItem'
+ */
 async function getCategoryItems(req, res) {
   try {
     const { categoryId } = req.params;
@@ -31,7 +85,27 @@ async function getCategoryItems(req, res) {
   }
 }
 
-// 获取热门菜品
+/**
+ * @swagger
+ * /api/menu/hot-items:
+ *   get:
+ *     summary: 获取热门菜品
+ *     tags: [Menu]
+ *     responses:
+ *       200:
+ *         description: 获取热门菜品成功
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 items:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/MenuItem'
+ */
 async function getHotItems(req, res) {
   try {
     const items = await MenuModel.getHotItems();
@@ -45,7 +119,34 @@ async function getHotItems(req, res) {
   }
 }
 
-// 获取菜品详情
+/**
+ * @swagger
+ * /api/menu/item/{id}:
+ *   get:
+ *     summary: 获取菜品详情
+ *     tags: [Menu]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: 菜品ID
+ *     responses:
+ *       200:
+ *         description: 获取菜品详情成功
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 item:
+ *                   $ref: '#/components/schemas/MenuItem'
+ *       404:
+ *         description: 菜品不存在
+ */
 async function getMenuItem(req, res) {
   try {
     const { id } = req.params;
